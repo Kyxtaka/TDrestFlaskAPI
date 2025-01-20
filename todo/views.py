@@ -18,3 +18,15 @@ def make_public_task(task):
 def get_tasks():
     return  jsonify(tasks=[make_public_task(t)for t in tasks])
 
+@app.route ( '/todo/api/v1.0/tasks', methods = ['POST'])
+def create_task () :
+    if not request.json or not 'title' in request.json :
+        abort(400)
+    task = {
+    'id': tasks [-1]['id'] + 1 ,
+    'title': request . json ['title'] ,
+    'description': request.json.get('description', " "),
+    'done': False
+    }
+    tasks.append(task)
+    return jsonify({'task': make_public_task(task)}),201
