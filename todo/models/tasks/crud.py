@@ -2,7 +2,6 @@ collection = []
 _id = 0
 
 class collection:
-    
     @staticmethod
     def get():
         return collection[:] # return a copy of the list
@@ -16,7 +15,6 @@ class collection:
         return task
     
 class item:
-    
     @staticmethod
     def get(id):
         for task in collection:
@@ -30,5 +28,13 @@ class item:
             if t['id'] == id:
                 del collection[i]
                 return True
-        return False    
+        return False 
+    
+    @staticmethod
+    def update(id, task):
+        for t in enumerate(collection):
+            if t['id'] == id:
+                t.update(task)
+                return t
+        return None 
     
