@@ -6,6 +6,7 @@ from .object import Questionnaire
 
 ## Questions
 class CRUDQUIZ: 
+    ###### Questions
     @staticmethod
     def get_all_questions():
         return db.session.query(Question).all()
@@ -21,6 +22,7 @@ class CRUDQUIZ:
         db.session.delete(question)
         db.session.commit()
         return question
+    
     @staticmethod
     def get_question_by_id(id: int):
         return db.session.query(Question).filter(Question.id==id).first()
@@ -31,6 +33,10 @@ class CRUDQUIZ:
         return question
     
     ##Questionnaire
+    @staticmethod
+    def get_all_questionnaires():
+        return db.session.query(Questionnaire).all()
+
     @staticmethod
     def create_questionnaire(questionnaire: Questionnaire):
         db.session.add(questionnaire)

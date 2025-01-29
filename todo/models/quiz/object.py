@@ -17,9 +17,25 @@ class Questionnaire(db.Model):
         }
         return json
     
+    @staticmethod
+    def get_next_id():
+        q=db.session.query(Questionnaire).order_by(Questionnaire.id.desc()).first()
+        if q:
+            return q.id+1
+        else:
+            return 1
+    
 class Question(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     title=db.Column(db.String(120))
     questionType=db.Column(db.String(120))
     questionnaire_id=db.Column(db.Integer,db.ForeignKey('questionnaire.id'))
     questionnaire=db.relationship("Questionnaire",backref=db.backref("questions",lazy="dynamic"))
+
+    @staticmethod
+    def get_next_id():
+        q=db.session.query(Question).order_by(Question.id.desc()).first()
+        if q:
+            return q.id+1
+        else:
+            return 1
