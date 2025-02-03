@@ -16,6 +16,27 @@ def get_question():
 def create_questionnaire():
     if not request.json or not 'name' in request.json:
         abort(400)
-    questionnaire = Questionnaire(id=Questionnaire.get_next_id(), name=request.json['name'])
+    questionnaire = Questionnaire(name=request.json["name"])
     CRUDQUIZ.create_questionnaire(questionnaire)
-    return jsonify({'question': CRUDQUIZ.create_questionnaire(Questionnaire)}),201  
+    return jsonify(listTask = [q.to_json() for q in CRUDQUIZ.get_all_questionnaires()]),201  
+
+@app.route('/todo/api/v1.0/quiz/update/<int:id>',methods=['PUT'])
+def update_questionnaire(id):
+    questionnaire = CRUDQUIZ.get_questionnaire_by_id(id)
+    if not questionnaire:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'name' in request.json and type(request.json['name']) != str:
+        abort(400)
+    questionnaire.name = request.json.get('name', questionnaire.name)
+    CRUDQUIZ.update_questionnaire(questionnaire)
+    return jsonify(listTask = [q.to_json() for q in CRUDQUIZ.get_all_questionnaires()]),200
+
+@app.route('/todo/api/v1.0/quiz/delete/<int:id>',methods=['DELETE'])
+def delete_questionnaire(id):
+    questionnaire = CRUDQUIZ.get_questionnaire_by_id(id)
+    if not questionnaire:
+        abort(404)
+    CRUDQUIZ.delete_questionnaire(questionnaire)
+    return jsonify(listTask = [q.to_json() for q in CRUDQUIZ.get_all_questionnaires()]),200

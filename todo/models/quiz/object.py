@@ -5,6 +5,7 @@ class Questionnaire(db.Model):
     name=db.Column(db.String(100))
     
     def __init__(self,name):
+        self.id=Questionnaire.get_next_id()
         self.name=name
     
     def __repr__(self):
@@ -31,6 +32,12 @@ class Question(db.Model):
     questionType=db.Column(db.String(120))
     questionnaire_id=db.Column(db.Integer,db.ForeignKey('questionnaire.id'))
     questionnaire=db.relationship("Questionnaire",backref=db.backref("questions",lazy="dynamic"))
+
+    def __init__(self, title, questionType, questionnaire_id):
+        self.id=Question.get_next_id()
+        self.title=title
+        self.questionType=questionType
+        self.questionnaire_id=questionnaire_id
 
     @staticmethod
     def get_next_id():
