@@ -7,12 +7,15 @@ from ...models.quiz.object import Question, Questionnaire
 
 @app.route('/todo/api/v1.0/quiz/all', methods=['GET'])
 def get_question():
-    return jsonify(questionnaires=[q for q in CRUDQUIZ.get_all_questionnaires()]), 200
+    listTask = [q.to_json() for q in CRUDQUIZ.get_all_questionnaires()]
+    print(listTask) 
+    return jsonify(listTask), 200
 
 
 @app.route('/todo/api/v1.0/quiz/add',methods=['POST'])
 def create_questionnaire():
     if not request.json or not 'name' in request.json:
         abort(400)
-    questionnaire = CRUDQUIZ.create_questionnaire(Questionnaire(id=Questionnaire.get_next_id(), name=request.json['name']))
+    questionnaire = Questionnaire(id=Questionnaire.get_next_id(), name=request.json['name'])
+    CRUDQUIZ.create_questionnaire(questionnaire)
     return jsonify({'question': CRUDQUIZ.create_questionnaire(Questionnaire)}),201  

@@ -39,10 +39,13 @@ class CRUDQUIZ:
 
     @staticmethod
     def create_questionnaire(questionnaire: Questionnaire):
-        db.session.add(questionnaire)
-        db.session.commit()
-        return questionnaire
-    
+        try:
+            db.session.add(questionnaire)
+            db.session.commit()
+            return questionnaire
+        except Exception as e:
+            print(e)
+            return None    
     @staticmethod
     def delete_questionnaire(questionnaire: Questionnaire):
         db.session.delete(questionnaire)
