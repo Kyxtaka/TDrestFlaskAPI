@@ -30,12 +30,9 @@ def create_questionnaire():
 @app.route('/todo/api/v1.0/quiz/<int:id>',methods=['PUT'])
 def update_questionnaire(id):
     questionnaire = CRUDQUIZ.get_questionnaire_by_id(id)
-    if not questionnaire:
-        abort(404)
-    if not request.json:
-        abort(400)
-    if 'name' in request.json and type(request.json['name']) != str:
-        abort(400)
+    if not questionnaire: abort(404)
+    if not request.json: abort(400)
+    if not 'name' in request.json: abort(400)
     questionnaire.name = request.json.get('name', questionnaire.name)
     CRUDQUIZ.update_questionnaire(questionnaire)
     return jsonify(questionnaires = [q.to_json() for q in CRUDQUIZ.get_all_questionnaires()]),200

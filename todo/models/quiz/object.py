@@ -12,9 +12,9 @@ class Questionnaire(db.Model):
         return"<Questionnaire(%d)%s>"%(self.id,self.name)
     
     def to_json(self):
-        json={
-        'id':self.id,
-        'name':self.name
+        json = {
+            'id':self.id,
+            'name':self.name
         }
         return json
     
@@ -46,3 +46,15 @@ class Question(db.Model):
             return q.id+1
         else:
             return 1
+        
+    def __repr__(self):
+        return"<Question(%d)%s>"%(self.id,self.title)
+        
+    def to_json(self):
+        json = {
+            'id':self.id,
+            'title':self.title,
+            'questionType':self.questionType,
+            'questionnaire_id':self.questionnaire_id
+        }
+        return json
