@@ -9,6 +9,7 @@ from ..models.quiz.object import Question, Questionnaire
 def syncdb():
     db.create_all()
 
+#Commande de creation de questionnaire
 @app.cli.command()
 @click.argument('name')
 def create_questionnaire(name):
@@ -21,16 +22,17 @@ def create_questionnaire(name):
         print("Error: ", e)
         db.session.rollback()
 
-    @app.cli.commant()
-    @click.argument('questionnaire_id')
-    @click.argument('question')
-    @click.argument('open 0 or 1')
-    def create_question(questionnaire_id, question, open):
-        try:
-            q = Question(questionnaire_id=questionnaire_id, question=question, open=open)
-            db.session.add(q)
-            db.session.commit()
-            print("Question created")
-        except Exception as e:
-            print("Error: ", e)
-            db.session.rollback()
+#Commande de creation de question
+@app.cli.command()
+@click.argument('questionnaire_id')
+@click.argument('title')
+@click.argument('open')
+def create_question(questionnaire_id, title, open):
+    try:
+        q = Question(title=title, questionType=open, questionnaire_id=questionnaire_id)
+        db.session.add(q)
+        db.session.commit()
+        print("Question created")
+    except Exception as e:
+        print("Error: ", e)
+        db.session.rollback()
