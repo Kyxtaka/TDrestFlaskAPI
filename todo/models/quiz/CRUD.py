@@ -12,6 +12,10 @@ class CRUDQUIZ:
         return db.session.query(Question).all()
 
     @staticmethod
+    def get_quiz_questions(id):
+        return db.session.query(Question).filter(Question.questionnaire_id==id).all()
+
+    @staticmethod
     def create_question(quesstion: Question):
         db.session.add(quesstion)
         db.session.commit()
