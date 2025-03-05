@@ -39,6 +39,12 @@ class Question(db.Model):
         self.questionType=questionType
         self.questionnaire_id=questionnaire_id
 
+        __mapper_args__ = {
+            'polymorphic_identity':'question',
+            'with_polymorphic':'*',
+            'polymorphic_on':questionType
+        }
+
     @staticmethod
     def get_next_id():
         q=db.session.query(Question).order_by(Question.id.desc()).first()
@@ -58,3 +64,58 @@ class Question(db.Model):
             'questionnaire_id':self.questionnaire_id
         }
         return json
+    
+class QuestionChoixMultiple(Question):
+    id=db.Column(db.Integer,db.ForeignKey('question.id'),primary_key=True)
+    choix1=db.Column(db.String(120))
+    choix2=db.Column(db.String(120))
+    choix3=db.Column(db.String(120))
+    choix4=db.Column(db.String(120))
+    reponse=db.Column(db.String(120))
+
+    def __init__(self, title, questionType, questionnaire_id, choix1, choix2, choix3, choix4, reponse):
+        super().__init__(title, questionType, questionnaire_id)
+        self.choix1=choix1
+        self.choix2=choix2
+        self.choix3=choix3
+        self.choix4=choix4
+        self.reponse=reponse
+
+    __mapper_args__ = {
+        'polymorphic_identity':'questionChoixMultiple',
+        'polymorphic_load':'inline'
+    }
+
+    def __repr__(self):
+        return"<QuestionChoixMultiple(%d)%s>"%(self.id,self.title)
+    
+    def to_json(self):
+        json = super().to_json()
+        json['choix1']=self.choix1
+        json['choix2']=self.choix2
+        json['choix3']=self.choix3
+        json['choix4']=self.choix4
+        json['reponse']=self.reponse
+        return json
+    
+class QuestionOpen(Question):
+    id=db.Column(db.Integer,db.ForeignKey('question.id'),primary_key=True)
+    reponse=db.Column(db.String(120))
+
+    def __init__(self, title, questionType, questionnaire_id, reponse):
+        super().__init__(title, questionType, questionnaire_id)
+        self.reponse=reponse
+
+    __mapper_args__ = {
+        'polymorphic_identity':'questionOpen',
+        'polymorphic_load':'inline'
+    }
+
+    def __repr__(self):
+        return"<QuestionOpen(%d)%s>"%(self.id,self.title)
+    
+    def to_json(self):
+        json = super().to_json()
+        json['reponse']=self.reponse
+        return json
+
