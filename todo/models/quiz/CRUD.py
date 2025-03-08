@@ -1,22 +1,26 @@
 from ...app import db
 from flask_sqlalchemy import SQLAlchemy 
-from .object import Question
-from .object import Questionnaire
+from .object import Question, QuestionChoixMultiple, QuestionOpen, Questionnaire
 
 
 ## Questions
-class CRUDQUIZ: 
+class CRUDquestion: 
     ###### Questions
     @staticmethod
-    def get_all_questions():
+    def get_all_questions() -> list[Question]:
         return db.session.query(Question).all()
 
     @staticmethod
-    def get_quiz_questions(id):
+    def get_quiz_questions(id) -> list[Question] | None:
         return db.session.query(Question).filter(Question.questionnaire_id==id).all()
+    
+    @staticmethod
+    def get_question_by_id(id: int) -> Question | None:
+        return db.session.query(Question).get(id)
+    
 
     @staticmethod
-    def create_question(quesstion: Question):
+    def create_question(quesstion: Question) -> list[Question] | None:
         try:
             db.session.add(quesstion)
             db.session.commit()
@@ -27,22 +31,18 @@ class CRUDQUIZ:
             return None
 
     @staticmethod
-    def delete_question(question: Question):
+    def delete_question(question: Question) -> bool:
         try:
             db.session.delete(question)
             db.session.commit()
-            return question
+            return True
         except Exception as e:
             db.session.rollback()
             print(e)
-            return None
-    
-    @staticmethod
-    def get_question_by_id(id: int):
-        return db.session.query(Question).filter(Question.id==id).first()
+            return False
 
     @staticmethod
-    def update_question(question):
+    def update_question(question) -> None:
         try:
             db.session.commit()
             return question
@@ -51,9 +51,11 @@ class CRUDQUIZ:
             print(e)
             return None
     
-    ##Questionnaire
+
+##Questionnaire
+class CRUDquiz:
     @staticmethod
-    def get_all_questionnaires():
+    def get_all_questionnaires() -> list[Questionnaire]:
         return db.session.query(Questionnaire).all()
 
     @staticmethod
@@ -68,24 +70,24 @@ class CRUDQUIZ:
             return None    
         
     @staticmethod
-    def delete_questionnaire(questionnaire: Questionnaire):
+    def delete_questionnaire(questionnaire: Questionnaire) ->  bool:
         try:
-            for question in CRUDQUIZ.get_quiz_questions(questionnaire.id):
+            for question in CRUDquestion.get_quiz_questions(questionnaire.id):
                 db.session.delete(question)
             db.session.delete(questionnaire)
             db.session.commit()
-            return questionnaire
+            return True
         except Exception as e:
             db.session.rollback()
             print(e)
-            return None
+            return False
             
     @staticmethod
-    def get_questionnaire_by_id(id: int):
-        return db.session.query(Questionnaire).filter(Questionnaire.id==id).first()
+    def get_questionnaire_by_id(id: int) -> Questionnaire | None:
+        return db.session.query(Questionnaire).get(id)
         
     @staticmethod
-    def update_questionnaire(questionnaire: Questionnaire):
+    def update_questionnaire(questionnaire: Questionnaire) -> None:
         try:
             db.session.commit()
             return questionnaire
@@ -93,3 +95,4 @@ class CRUDQUIZ:
             db.session.rollback()
             print(e)
             return None
+        

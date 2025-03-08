@@ -1,6 +1,6 @@
 import click
 from ..app import app, db
-from ..models.quiz.CRUD import CRUDQUIZ
+from ..models.quiz.CRUD import CRUDquiz, CRUDquestion
 from ..models.quiz.object import Question, Questionnaire
 
 
