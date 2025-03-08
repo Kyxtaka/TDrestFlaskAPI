@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+      <meta charset="utf-8"/>
+      <title>Vos tâches</title>
+      <link rel="stylesheet" href="css/flex.css"/>
+      <script src="js/jquery.min.js"></script>
+      <script src="js/todo.js"></script>
+  </head>
+
+  <body>
+
+    <header>
+      <h1>Les Quizs</h1>
+    </header>
+
+    <div id='main'>
+      
+      <aside id="nav1">
+        <h2>Questionnaire</h2>
+        <input id="button" type="button" value="Recuperer questionnaire" />
+        <div id="questionnaires"> </div>
+      </aside>
+
+      <article>
+        <h2>Editeur de questionnaire</h2>
+        <section class="tools">
+          <img id="add" src="img/new.png" alt="Nouveau questionnaire"/>
+          <img id="del" src="img/delete.png" alt="Supprimer Questionnaire"/>
+        </section>
+        <section id="currentquestionnaire"> </section>
+        <h3>Liste Questions</h3>
+        <section class="tools" id="questionnairetools"> </section>
+        <section id="listquestions"> </section>
+      </article>
+
+      <article>
+        <h2> Editeur de question</h2>
+        <section class="tools">
+          <img id="delQuestion" src="img/delete.png" alt="Supprimer Questionnaire"/>
+        </section>
+        <section id="currentquestion"> </section>
+      </article>
+    </div>
+    <footer>
+      <h4>©Département Informatique ⚛ IUT d'Orléans</h4>
+    </footer>
+  </body>
+</html>
